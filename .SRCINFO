@@ -13,6 +13,7 @@ pkgbase = matlab
 	depends = libunwind
 	depends = libxp
 	depends = libxpm
+	depends = libxss
 	depends = libxtst
 	depends = ncurses5-compat-libs
 	depends = nss
