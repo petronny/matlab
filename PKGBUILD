@@ -8,7 +8,7 @@
 pkgbase='matlab'
 pkgname=('matlab' 'matlab-licenses')
 pkgver=9.4.0.813654
-pkgrel=1
+pkgrel=2
 pkgdesc='A high-level language for numerical computation and visualization'
 arch=('x86_64')
 url='http://www.mathworks.com'
@@ -81,7 +81,7 @@ package_matlab() {
   msg2 'Creating links for license'
   rm -rf "${srcdir}/licenses"
   mv "${pkgdir}/opt/tmw/${pkgname}/licenses" "${srcdir}/licenses"
-  ln -s "/etc/tmw/${pkgname}/licenses/" "${pkgdir}/opt/tmw/${pkgname}/licenses"
+  mkdir -p "${pkgdir}/opt/tmw/${pkgname}/licenses"
 
   msg2 'Creating links for executables'
   install -d -m755 "${pkgdir}/usr/bin/"
@@ -99,17 +99,21 @@ package_matlab() {
   sed -i "s#CXX='g++'#CXX='g++-6'#g" "${pkgdir}/opt/tmw/${pkgname}/bin/mexopts.sh"
   sed -i "s#FC='gfortran'#FC='gfortran-6'#g" "${pkgdir}/opt/tmw/${pkgname}/bin/mexopts.sh"
 
-  ## See $MATLABROOT/sys/os/glnxa64/README.libstdc++
+  # See $MATLABROOT/sys/os/glnxa64/README.libstdc++
   msg2 'Removing unused library files'
   rm ${pkgdir}/opt/tmw/${pkgname}/sys/os/glnxa64/{libstdc++.so.6.0.22,libstdc++.so.6,libgcc_s.so.1,libgfortran.so.3.0.0,libgfortran.so.3,libquadmath.so.0.0.0,libquadmath.so.0}
+
+  # https://bbs.archlinux.org/viewtopic.php?id=236821
+  rm ${pkgdir}/opt/tmw/${pkgname}/bin/glnxa64/libfreetype.*
 
   # make sure MATLAB can find libgfortran.so.3
   sed -i 's,LD_LIBRARY_PATH="`eval echo $LD_LIBRARY_PATH`",LD_LIBRARY_PATH="`eval echo $LD_LIBRARY_PATH`:/usr/lib/gcc/x86_64-pc-linux-gnu/'$(pacman -Q gcc6 | awk '{print $2}' | cut -d- -f1)'",g' "${pkgdir}/opt/tmw/matlab/bin/matlab"
 }
 
 package_matlab-licenses() {
-  mkdir -p "${pkgdir}/etc/tmw/${pkgbase}"
-  mv "${srcdir}/licenses" "${pkgdir}/etc/tmw/${pkgbase}/licenses"
+  depends=('matlab')
+  mkdir -p "${pkgdir}/opt/tmw/${pkgbase}"
+  mv "${srcdir}/licenses" "${pkgdir}/opt/tmw/${pkgbase}/licenses"
 }
 
 if [ ! -z ${_partialinstall+isSet} ] && [ -z ${_products+isSet} ]; then
