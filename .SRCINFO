@@ -1,7 +1,7 @@
 pkgbase = matlab
 	pkgdesc = A high-level language for numerical computation and visualization
-	pkgver = 9.4.0.813654
-	pkgrel = 2
+	pkgver = 9.5.0.944444
+	pkgrel = 1
 	url = http://www.mathworks.com
 	arch = x86_64
 	license = custom
@@ -15,7 +15,6 @@ pkgbase = matlab
 	depends = libxpm
 	depends = libxss
 	depends = libxtst
-	depends = ncurses5-compat-libs
 	depends = nss
 	depends = gcc6
 	depends = portaudio
@@ -27,10 +26,13 @@ pkgbase = matlab
 	depends = xerces-c
 	source = file://matlab.tar
 	source = file://matlab.fik
+	source = file://license.dat
+	md5sums = SKIP
 	md5sums = SKIP
 	md5sums = SKIP
 
 pkgname = matlab
 
 pkgname = matlab-licenses
+	depends = matlab=9.5.0.944444
 

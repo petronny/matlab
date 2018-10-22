@@ -6,6 +6,4 @@
 *.lic
 *.dat
 *.iso
-src/
-pkg/
-ml/
+*/
